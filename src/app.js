@@ -38,14 +38,8 @@ app.post("/tweets", (req, res) => {
 
 	tweets.push(newTweet)
 
-	if(tweets.length > 10) {
 		res.send(tweets.splice(0, tweets.length-10))
-	} else {
-
-		res.send(tweets)
-	}
-
-
+	
 })
 
 
