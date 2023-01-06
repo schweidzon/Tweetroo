@@ -23,6 +23,9 @@ app.post("/sign-up", (req, res) => {
 })
 
 app.post("/tweets", (req, res) => {
+	if(users.length < 0) {
+		res.send("UNAUTHORIZED")
+	}
 	const newTweet = req.body
 	users.forEach((user) => {
 		if(user.username === newTweet.username) {
@@ -30,7 +33,7 @@ app.post("/tweets", (req, res) => {
 			newTweet.avatar = user.avatar
 		}
 	})
-	console.log(newTweet)
+
 	tweets.push(newTweet)
 
 	res.send(tweets)
