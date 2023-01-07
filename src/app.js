@@ -58,12 +58,16 @@ app.post("/tweets", (req, res) => {
 
 app.get("/tweets", (req, res) => {
 	 const {page} = parseInt(req.query)
+	 const reversedTweets = [...tweets]
 	 console.log(typeof page)
-	  if(!page || isNaN(page)) {
+	 if(!page && reversedTweets.length > 10) {
+		return res.send(reversedTweets.splice(0, reversedTweets.length - 10))
+	 }
+	  if(page <= 1) {
 	  	return res.status(400).send("Informe uma página válida!")
 	  }
 	 console.log(page)
-	  const reversedTweets = [...tweets]
+	
 	  console.log(reversedTweets)
 	  
 	if(tweets.length <= 10) {
