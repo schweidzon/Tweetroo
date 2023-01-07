@@ -25,7 +25,9 @@ app.post("/sign-up", (req, res) => {
 
 })
 
-app.post("/tweets", (req, res) => {
+app.post("/tweets", (req, res) => {	
+	const header = req.headers
+	console.log(header.user)
 
 	if (users.length === 0) {
 		return res.status(401).send({
@@ -33,7 +35,9 @@ app.post("/tweets", (req, res) => {
 		});
 	}
 	const newTweet = req.body
-	if (!newTweet.username || !newTweet.avatar) {
+	newTweet.username = header.user
+
+	if (!newTweet.username || !newTweet.tweet) {
 		return res.status(400).send("Todos os campos são obrigatórios!")
 	}
 	users.forEach((user) => {
@@ -42,17 +46,27 @@ app.post("/tweets", (req, res) => {
 			newTweet.avatar = user.avatar
 		}
 	})
+	console.log(newTweet)
 
 	tweets.push(newTweet)
 
 	//res.send(tweets.splice(0, tweets.length - 10))
-	//res.status(201).send("Created")
+	res.status(201).send("Created")
 
 })
 
 
 app.get("/tweets", (req, res) => {
-	res.send(tweets.splice(0, tweets.length - 10))
+	 const {page} = req.query
+	  if(page && page < 1) {
+	  	return res.status(400).send("Informe uma página válida!")
+	  }
+	 console.log(page)
+	  const reversedTweets = [...tweets]
+	  console.log(reversedTweets)
+	  
+	res.send((reversedTweets.reverse().slice(0, Number(page * 10))))
+	//res.send(tweets.splice(0, tweets.length - 10))
 })
 
 app.get("/tweets/:username", (req, res) => {
