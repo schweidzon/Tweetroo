@@ -14,7 +14,7 @@ const tweets = []
 app.post("/sign-up", (req, res) => {
 	console.log(req.body)
 	const newUser = req.body
-	if (!newUser.username|| !newUser.avatar) {
+	if (!newUser.username|| !newUser.avatar || typeof newUser.username !== "string" || typeof newUser.avatar !== "string") {
 		return res.status(400).send("Todos os campos são obrigatórios!")
 	}
 
@@ -37,7 +37,7 @@ app.post("/tweets", (req, res) => {
 	const newTweet = req.body
 	newTweet.username = header.user
 
-	if (!newTweet.username || !newTweet.tweet) {
+	if (!newTweet.username || !newTweet.tweet || typeof newTweet.tweet !== "string") {
 		return res.status(400).send("Todos os campos são obrigatórios!")
 	}
 	users.forEach((user) => {
@@ -59,21 +59,19 @@ app.post("/tweets", (req, res) => {
 app.get("/tweets", (req, res) => {
 	 const {page} = parseInt(req.query)
 	 const reversedTweets = [...tweets]
-	 console.log(typeof page)
+	 
 	 if(!page && reversedTweets.length > 10) {
-		return res.send(reversedTweets.splice(0, reversedTweets.length - 10))
-	 }
-	  if(page <= 1) {
-	  	return res.status(400).send("Informe uma página válida!")
-	  }
-	 console.log(page)
+		return res.send(reversedTweets.splice(0, reversedTweets.length - 10))	
+	}
 	
-	  console.log(reversedTweets)
+	 if(page && page <= 1) {
+		return res.status(400).send("Informe uma página válida!")
+	}
 	  
 	if(tweets.length <= 10) {
 		return res.send(reversedTweets.reverse())
 	}
-	res.send((reversedTweets.reverse().splice(0, Number(page * 10))))
+	res.send((reversedTweets.reverse().splice(0, page * 10)))
 })
 
 app.get("/tweets/:username", (req, res) => {
