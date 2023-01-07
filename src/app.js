@@ -57,14 +57,17 @@ app.post("/tweets", (req, res) => {
 
 
 app.get("/tweets", (req, res) => {
-	 const {page} = parseInt(req.query)
+	 const {page} = (req.query)
+	 
 	 const reversedTweets = [...tweets]
 	 
 	 if(!page && reversedTweets.length > 10) {
-		return res.send(reversedTweets.splice(0, reversedTweets.length - 10))	
+		
+		return res.send(reversedTweets.reverse().slice(0, 10))	
 	}
 	
-	 if(page && page <= 1) {
+	 if(page && page <= 0) {
+		console.log(page)
 		return res.status(400).send("Informe uma página válida!")
 	}
 	  
