@@ -74,7 +74,7 @@ app.get("/tweets", (req, res) => {
 
 	if(page && page >= 1) {
 
-		return res.send((reversedTweets.reverse().slice(0, page * 10)))
+		return res.send((reversedTweets.reverse().slice((page-1)*10, page * 10)))
 	} 
 	  
 	if(tweets.length <= 10) {
