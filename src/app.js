@@ -58,7 +58,7 @@ app.post("/tweets", (req, res) => {
 
 app.get("/tweets", (req, res) => {
 	 const {page} = req.query
-	  if(page && page < 1) {
+	  if(!page || isNaN(page)) {
 	  	return res.status(400).send("Informe uma página válida!")
 	  }
 	 console.log(page)
@@ -68,7 +68,7 @@ app.get("/tweets", (req, res) => {
 	if(tweets.length <= 10) {
 		return res.send(reversedTweets.reverse())
 	}
-	res.send((reversedTweets.reverse().slice(0, Number(page * 10))))
+	res.send((reversedTweets.reverse().splice(0, Number(page * 10))))
 })
 
 app.get("/tweets/:username", (req, res) => {
