@@ -65,8 +65,11 @@ app.get("/tweets", (req, res) => {
 	  const reversedTweets = [...tweets]
 	  console.log(reversedTweets)
 	  
+	if(tweets.length < 10) {
+
+		return res.send(reversedTweets.reverse())
+	}
 	res.send((reversedTweets.reverse().slice(0, Number(page * 10))))
-	//res.send(tweets.splice(0, tweets.length - 10))
 })
 
 app.get("/tweets/:username", (req, res) => {
