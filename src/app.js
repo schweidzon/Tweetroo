@@ -61,20 +61,25 @@ app.get("/tweets", (req, res) => {
 	 
 	 const reversedTweets = [...tweets]
 	 
-	 if(!page && reversedTweets.length > 10) {
-		
+	 if(!page && reversedTweets.length > 10) {		
 		return res.send(reversedTweets.reverse().slice(0, 10))	
 	}
+
+	
 	
 	 if(page && page <= 0) {
 		console.log(page)
 		return res.status(400).send("Informe uma página válida!")
 	}
+
+	if(page && page >= 1) {
+
+		return res.send((reversedTweets.reverse().splice(0, page * 10)))
+	} 
 	  
 	if(tweets.length <= 10) {
 		return res.send(reversedTweets.reverse())
 	}
-	res.send((reversedTweets.reverse().splice(0, page * 10)))
 })
 
 app.get("/tweets/:username", (req, res) => {
